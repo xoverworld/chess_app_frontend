@@ -1,21 +1,25 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from 'axios'
+import {useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {useAuth} from "../context/AuthContext.tsx";
 
 function Login() {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const { user, login }: any = useAuth()
+
+    useEffect(() => {
+        if(user)
+        {
+            navigate("/")
+        }
+    },[user])
 
     const handleLogin = async () => {
-        const params = new URLSearchParams();
-        params.append('username', email);
-        params.append('password', password);
-
         try{
-            const response = await axios.post("http://localhost:8000/login", params);
-
-            localStorage.setItem("token", response.data.access_token);
-            console.log(localStorage.getItem("token"));
+            await login(username,password)
+            navigate("/")
         }
         catch(error){
             console.log(error);
@@ -36,8 +40,8 @@ function Login() {
                             type="email"
                             className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             placeholder="magnus@carlsen.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                     </div>

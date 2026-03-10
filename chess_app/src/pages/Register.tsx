@@ -1,24 +1,29 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import { useAuth } from "../context/AuthContext.tsx";
 
 function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
+    const navigate = useNavigate();
+    const { user, register }: any = useAuth();
+
+
+
+    useEffect(() => {
+        if(user)
+        {
+            navigate("/")
+        }
+    },[user])
 
     const handleRegister = async () => {
         if (password === repeatPassword) {
             try{
-                const response = await axios.post("http://localhost:8000/register",
-                    {
-                        username: username,
-                        email: email,
-                        password: password,
-                    })
-
-                console.log(response.data);
+                await register(username, email, password);
+                navigate("/")
             }
             catch(error){
                 console.log(error);
