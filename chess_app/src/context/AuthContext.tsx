@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
         const token = localStorage.getItem('token')
         if (!token) { setLoading(false); return }
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        axios.get('http://localhost:8000/me')
+        axios.get('/api/me')
             .then(r => setUser(r.data))
             .catch(() => localStorage.removeItem('token'))
             .finally(() => setLoading(false))
@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
         params.append('username', username);
         params.append('password', password);
 
-        const r = await axios.post('http://localhost:8000/login', params)
+        const r = await axios.post('/api/login', params)
         const { token, user } = r.data
         localStorage.setItem('token', token)
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
     }
 
     const register = async (username: string, email: string, password: string) => {
-        const r = await axios.post('http://localhost:8000/register', { username, email, password })
+        const r = await axios.post('/api/register', { username, email, password })
         const { token, user } = r.data
         localStorage.setItem('token', token)
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
     }
 
     const refreshUser = async () => {
-        const r = await axios.get('http://localhost:8000/me')
+        const r = await axios.get('/api/me')
         setUser(r.data)
     }
 

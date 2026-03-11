@@ -38,8 +38,8 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
-                            <Route path="/room" element={<ProtectedRoute><Room /> </ProtectedRoute>} />
-                            <Route path="/profile" element={ <ProtectedRoute><Profile /></ProtectedRoute>} />
+                            <Route path="/game/:gameId" element={<ProtectedRoute><Room /> </ProtectedRoute>} />
+                            <Route path="/profile/:room" element={ <ProtectedRoute><Profile /></ProtectedRoute>} />
                             <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>
                     </main>

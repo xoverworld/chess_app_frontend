@@ -12,4 +12,18 @@ export default defineConfig({
       react: path.resolve('./node_modules/react'),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/ws' : {
+        target: 'ws://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ws/, ''),
+      }
+    }
+  }
 })
